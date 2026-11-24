@@ -2,8 +2,10 @@
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -60,3 +62,9 @@ app.include_router(websocket_router)
 @app.get("/health", tags=["health"])
 async def health_check():
     return {"status": "ok", "service": "NovaRemote Backend"}
+
+
+# Serve dashboard as static files at /dashboard/
+_static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(_static_dir):
+    app.mount("/dashboard", StaticFiles(directory=_static_dir, html=True), name="dashboard")

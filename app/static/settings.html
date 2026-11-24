@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaRemote — Admin Settings</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0a0f1e',
+            graphite: '#111827',
+            cardborder: '#1f2937',
+            brand: '#3b82f6',
+            cyanAccent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+</head>
+<body class="bg-[#0a0f1e] text-gray-100 flex min-h-screen">
+
+  <!-- Desktop Sidebar -->
+  <aside class="hidden md:flex flex-col w-64 bg-[#111827] border-r border-[#1f2937] shrink-0 p-5">
+    <div class="mb-8 flex items-center">
+      <img src="assets/logo.svg" alt="NovaRemote Logo" class="h-9">
+    </div>
+
+    <nav class="space-y-1.5 flex-1">
+      <a href="dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 font-medium transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="dashboard.html#device-grid-section" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 font-medium transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+        </svg>
+        <span>Devices</span>
+      </a>
+
+      <a href="settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-blue-600/10 text-blue-400 font-medium border border-blue-500/20">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 min-w-0 p-6 md:p-10 pb-20 max-w-5xl mx-auto w-full space-y-8">
+    
+    <div>
+      <h1 class="text-2xl font-bold text-white">System Settings</h1>
+      <p class="text-sm text-gray-400 mt-1">Configure admin security, device pairings, and server integration</p>
+    </div>
+
+    <!-- Section 1: Account (Change Password) -->
+    <div class="card p-6 md:p-8">
+      <h2 class="text-lg font-semibold text-white mb-2">Admin Account Security</h2>
+      <p class="text-xs text-gray-400 mb-6">Update your master admin account authentication credentials</p>
+
+      <div id="password-error" class="hidden mb-4 p-3 bg-red-900/30 border border-red-700/60 rounded-lg text-xs text-red-300"></div>
+      <div id="password-success" class="hidden mb-4 p-3 bg-green-900/30 border border-green-700/60 rounded-lg text-xs text-green-300"></div>
+
+      <form id="form-change-password" class="max-w-md space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Current Password</label>
+          <input type="password" id="current-password" required class="w-full px-3.5 py-2.5 bg-[#0a0f1e] border border-[#1f2937] rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">New Password</label>
+          <input type="password" id="new-password" required minlength="8" class="w-full px-3.5 py-2.5 bg-[#0a0f1e] border border-[#1f2937] rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Confirm New Password</label>
+          <input type="password" id="confirm-password" required minlength="8" class="w-full px-3.5 py-2.5 bg-[#0a0f1e] border border-[#1f2937] rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <button type="submit" class="btn-primary text-sm px-4 py-2 mt-2">
+          Update Password
+        </button>
+      </form>
+    </div>
+
+    <!-- Section 2: Paired Devices -->
+    <div class="card p-6 md:p-8">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-semibold text-white">Paired Devices Management</h2>
+          <p class="text-xs text-gray-400 mt-0.5">Revoke trust or remove enrolled Android endpoints immediately</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase font-semibold">
+              <th class="py-3 px-4">Device Name</th>
+              <th class="py-3 px-4">Hardware Info</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4">Last Telemetry</th>
+              <th class="py-3 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="paired-devices-body">
+          </tbody>
+        </table>
+
+        <div id="paired-devices-loading" class="text-center py-6">
+          <div class="inline-block animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
+        </div>
+
+        <div id="paired-devices-empty" class="hidden text-center py-6 text-xs text-gray-500">
+          No paired devices found in the database.
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Server Configuration -->
+    <div class="card p-6 md:p-8">
+      <h2 class="text-lg font-semibold text-white mb-2">Server Connection</h2>
+      <p class="text-xs text-gray-400 mb-4">The currently targeted NovaRemote FastAPI backend endpoint</p>
+
+      <div class="flex items-center gap-3 max-w-lg">
+        <input type="text" id="setting-server-url" readonly class="flex-1 px-3.5 py-2.5 bg-[#0a0f1e] border border-[#1f2937] rounded-lg text-sm font-mono text-gray-300">
+        <button id="btn-copy-server" class="px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-sm font-medium rounded-lg text-white transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span>Copy</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 4: Data Retention Policy -->
+    <div class="card p-6 md:p-8">
+      <h2 class="text-lg font-semibold text-white mb-2">Telemetry Retention Policy</h2>
+      <p class="text-xs text-gray-400 mb-4">Configure automatic purging schedule for historical audit and activity telemetry</p>
+
+      <div class="flex items-center gap-4 max-w-md">
+        <select id="data-retention-select" class="flex-1 px-3.5 py-2.5 bg-[#0a0f1e] border border-[#1f2937] rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <option value="7">7 Days Retention</option>
+          <option value="30" selected>30 Days Retention (Recommended)</option>
+          <option value="90">90 Days Retention</option>
+        </select>
+        <button id="btn-save-retention" class="btn-primary text-sm px-4 py-2.5">
+          Save Policy
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 5: Danger Zone -->
+    <div class="card p-6 md:p-8 border border-red-900/40 bg-red-950/10">
+      <h2 class="text-lg font-semibold text-red-400 mb-1">Danger Zone</h2>
+      <p class="text-xs text-gray-400 mb-6">Irreversible destructive actions regarding your master account</p>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <h4 class="text-sm font-medium text-white">Delete Admin Account</h4>
+          <p class="text-xs text-gray-400">Permanently terminate account credentials and disconnect all active device sessions</p>
+        </div>
+        <button id="btn-delete-account" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium text-xs rounded-lg transition shadow-md">
+          Delete Account
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+    <div class="card bg-[#111827] border border-red-800/80 max-w-md w-full p-6">
+      <h3 class="text-lg font-bold text-red-400 mb-2">Confirm Account Deletion</h3>
+      <p class="text-xs text-gray-300 mb-4">
+        This action cannot be undone. All paired devices will immediately lose authentication and connection to this dashboard.
+      </p>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-gray-400 mb-1">Type <span class="text-red-400 font-mono">DELETE</span> to confirm:</label>
+        <input type="text" id="delete-confirm-input" class="w-full px-3 py-2 bg-[#0a0f1e] border border-gray-700 rounded text-sm text-white font-mono focus:outline-none focus:border-red-500">
+      </div>
+      <div class="flex justify-end gap-2">
+        <button id="btn-cancel-delete" class="px-4 py-2 text-xs text-gray-400 hover:text-white rounded">Cancel</button>
+        <button id="btn-confirm-delete" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium text-xs rounded shadow">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/settings.js"></script>
+</body>
+</html>
